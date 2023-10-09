@@ -1,0 +1,146 @@
+{{>header}}
+
+<div class="ui raised very padded text container segment">
+    <div class="ui form">
+        <div class="two fields">
+            <div class="field">
+                <label>First name</label>
+                <input type="text" id="fname" required placeholder="First Name" name="fname" value="{{doc.fname}}">
+            </div>
+            <div class="field">
+                <label>Last Name</label>
+                <input type="text" placeholder="Last Name" name="lname" required id="lname" value="{{doc.lname}}">
+            </div>
+        </div>
+        <div class="three fields">
+            <div class="field">
+                <label>Phone Number</label>
+                <input type="text" required placeholder="Enter Your Phone Number" id="phone" name="phone"
+                    value="{{doc.phone}}">
+            </div>
+            <div class="field">
+                <label>Date Of Birth</label>
+                <input type="date" required id="dob" placeholder="Enter Your Date Of Birth" name="dob"
+                    value="{{_convertDate docs.dob 'YYYY-MM-DD'}}">
+            </div>
+            <div class="field">
+                <label>Email</label>
+                <input type="email" required placeholder="Enter Your Email" id="email" name="email"
+                    value="{{doc.email}}">
+            </div>
+        </div>
+        <input type="hidden" id="id" name="id" value="{{doc._id}}">
+        <button type="button" onclick="submitData()">Submit</button>
+    </div>
+</div>
+</form>
+<br><br><br><br>
+<table class="ui eighteen column table">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Email Address</th>
+            <th>Date Of Birth</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#if doc}}
+        {{#each doc}}
+        <tr>
+            <td>{{this.fname}}</td>
+            <td>{{this.lname}}</td>
+            <td>{{this.phone}}</td>
+            <td>{{this.email}}</td>
+            <td>{{_convertDate this.dob 'DD/MM/YYYY'}}</td>
+            <td>
+                <button> <a onclick="updateData('{{this._id}}')">Edit</a></button>
+            </td>
+            <td>
+                <button> <a href="/patientdataDelete/{{this._id}}">Delete</a></button>
+            </td>
+            {{/each}}
+            {{/if}}
+        </tr>
+
+
+</table>
+{{>footer}}
+
+
+<script>
+    function submitData() {
+        const id = $('#id').val();
+        const fname = $('#fname').val();
+        const lname = $('#lname').val();
+        const phone = $('#phone').val();
+        const dob = $('#dob').val();
+        const email = $('#email').val();
+
+
+        $.ajax({
+            url: "/patientFormSubmit",
+            method: 'POST',
+            data: { id, fname, lname, phone, dob, email }
+        }).done(function () {
+            $('#fname').val('');
+            $('#lname').val('');
+            $('#phone').val('');
+            $('#email').val('');
+            $('#id').val('');
+            getAlldata();
+            alert("ok");
+        });
+    }
+    function updateData(id) {
+        const fname = $('#fname').val();
+        const lname = $('#lname').val();
+        const phone = $('#phone').val();
+        const dob = $('#dob').val();
+        const email = $('#email').val();
+        $.ajax({
+            url: "/patientdataUpdate/" + id,
+            method: 'GET',
+        }).done(function (response) {
+            $('#fname').val(response.data.fname);
+            $('#lname').val(response.data.lname);
+            $('#phone').val(response.data.phone);
+            $('#email').val(response.data.email);
+            $('#id').val(response.data._id);
+        });
+
+
+    }
+
+    function getAlldata() {
+        $.ajax({
+            url: "/getallpatient/",
+            method: 'GET',
+        }).done(function (response) {
+            $(".table tbody").empty();
+            var rows = "<tbody>";
+            response.data.map((elem) => {
+                rows += `<tr>
+                <td>${elem.fname}</td>
+                <td>${elem.lname}</td>
+                <td>${elem.phone}</td>
+                <td>s${elem.email}</td>
+                <td>${elem.dob}</td>
+                <td>
+                    <button> <a onclick="updateData('${elem._id}')">Edit</a></button>
+                </td>
+                <td>
+                    <button> <a href="/patientdataDelete/649ece217a8f81a8d73d67ed">Delete</a></button>
+                </td>
+                </tr>`
+            });
+
+            rows+="</tbody";
+            $(".table").append(rows);
+        });
+    }
+</script>
