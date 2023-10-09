@@ -1,0 +1,52 @@
+{
+    "extends": ["eslint:recommended", "google"],
+    "parserOptions": {
+        "ecmaVersion": 2017
+    },
+    "env": {
+        "es6": true,
+        "amd": true,
+        "node": true,
+        "browser": true
+    },
+    "rules": {
+        "no-var": 0,
+        "require-jsdoc": 0,
+        "no-tabs": 0,
+        "max-len": 0,
+        "indent": [2, "tab"],
+        "camelcase": 0,
+        "no-throw-literal": 0,
+		"quotes": [2, "double"],
+        "new-cap": 0,
+        "linebreak-style": 0
+    },
+    "globals": {
+        "icplApp": true,
+        "_VALID_PRIVILEGES": true,
+        "app": true,
+        "_": true,
+		"$": true,
+		"moment": true,
+		"isProductionMode": true,
+		"PRODUCTION_BASEPATH": true,
+		"BASE_URL": true,
+		"CLIENT_MODE": true,
+		"downloadDataAsExcel": true,
+		"Workbook": true,
+		"sheet_from_array_of_arrays": true,
+		"XLSX": true,
+		"saveAs": true,
+        "s2ab": true,
+        "__round": true,
+        "getDateOfISOWeek": true,
+        "userprofile": true,
+        "Compressor": true,
+        "angular": true,
+        "date2String": true,
+        "excelDateToJSDate": true,
+        "toTitleCase": true,
+        "blobToString": true,
+        "md5": true
+    }
+}

@@ -1,0 +1,12 @@
+
+/node_modules/
+/.tmp/
+/.gen/
+.idea/
+uploads/
+/.vscode/
+/tmp/
+activation.js
+generateKey.js
+.env
+/xlsx
